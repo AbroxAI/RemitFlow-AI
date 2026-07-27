@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Join RemitFlow AI — Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #0d2b2b; --gold: #d4a843; --green: #22c55e;
+            --surface: #113636; --surface2: #164242; --text: #e8ecec;
+            --text2: #b0bcbc; --text3: #7a9494; --radius: 16px;
+            --error: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif; background: #071a1a;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; color: var(--text);
+        }
+        .signup-card {
+            background: var(--surface); border: 1px solid rgba(212,168,67,.15);
+            border-radius: var(--radius); padding: 28px 20px; width: 90%; max-width: 380px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        .logo { text-align: center; margin-bottom: 20px; }
+        .logo-svg { width: 40px; height: 40px; }
+        .logo-text { font-weight: 700; font-size: 1.5rem; color: var(--text); }
+        .logo-text span { color: var(--gold); }
+        h2 { text-align: center; font-size: 1.2rem; margin-bottom: 6px; }
+        .sub { text-align: center; font-size: 0.75rem; color: var(--text3); margin-bottom: 18px; }
+        .form-group { margin-bottom: 14px; position: relative; }
+        label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+        input {
+            width: 100%; padding: 10px 12px; background: var(--surface2);
+            border: 1.5px solid rgba(212,168,67,.25); border-radius: 8px;
+            color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.85rem;
+        }
+        input:focus { border-color: var(--gold); outline: none; }
+        input.input-error { border-color: var(--error); }
+        .field-error {
+            font-size: 0.65rem; color: var(--error); margin-top: 4px; display: none;
+        }
+        .field-error.visible { display: block; }
+        .hint { font-size: 0.6rem; color: var(--text3); margin-top: 4px; }
+        .btn-signup {
+            width: 100%; padding: 12px; background: var(--gold); color: #0d2b2b;
+            font-weight: 700; border: none; border-radius: 25px; font-size: 0.9rem;
+            cursor: pointer; margin-top: 8px; transition: 0.2s;
+        }
+        .btn-signup:hover { background: #c4973a; }
+        .btn-signup:disabled { opacity: 0.5; cursor: not-allowed; }
+        .footer-link { text-align: center; margin-top: 14px; font-size: 0.7rem; color: var(--text3); }
+        .footer-link a { color: var(--gold); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="signup-card">
+        <div class="logo">
+            <svg class="logo-svg" viewBox="0 0 40 40"><circle cx="10" cy="20" r="3" fill="#d4a843" opacity="0.8"/><circle cx="30" cy="20" r="3" fill="#d4a843" opacity="0.8"/><path d="M13 20 Q20 6 27 20" stroke="#d4a843" stroke-width="2.5" fill="none"/><path d="M27 20 Q20 34 13 20" stroke="#d4a843" stroke-width="2.5" fill="none" opacity="0.6"/><circle cx="20" cy="20" r="1.5" fill="#22c55e"/></svg>
+            <div class="logo-text">Remit<span>Flow</span> AI</div>
+        </div>
+        <h2>Create Your Account</h2>
+        <div class="sub">Join 12,000+ families saving together</div>
+        <form id="signupForm" novalidate>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Choose a username" required minlength="5">
+                <div class="field-error" id="usernameError">Username must be at least 5 characters.</div>
+                <div class="hint">Min 5 characters, no spaces.</div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Create a password" required minlength="6">
+                <div class="field-error" id="passwordError">Password must be at least 6 characters and include a special character (!@#$%^&*).</div>
+                <div class="hint">Min 6 chars, at least one special character.</div>
+            </div>
+            <div class="form-group">
+                <label>Invitation Code</label>
+                <input type="text" id="inviteCode" placeholder="Enter your invitation code" required>
+                <div class="field-error" id="inviteCodeError">Invitation code is required.</div>
+                <div class="hint">Provided by your referrer.</div>
+            </div>
+            <button type="submit" class="btn-signup" id="signupBtn">Sign Up</button>
+        </form>
+        <div class="footer-link">
+            Already have an account? <a href="index.html">Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const username = document.getElementById('username');
+        const password = document.getElementById('password');
+        const inviteCode = document.getElementById('inviteCode');
+        const btn = document.getElementById('signupBtn');
+
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
+        const inviteCodeError = document.getElementById('inviteCodeError');
+
+        function showError(field, errorEl, condition) {
+            if (condition) {
+                field.classList.add('input-error');
+                errorEl.classList.add('visible');
+            } else {
+                field.classList.remove('input-error');
+                errorEl.classList.remove('visible');
+            }
+        }
+
+        function validateUsername() {
+            const valid = username.value.trim().length >= 5 && !/\s/.test(username.value);
+            showError(username, usernameError, !valid);
+            return valid;
+        }
+
+        function validatePassword() {
+            const pw = password.value;
+            const valid = pw.length >= 6 && /[!@#$%^&*(),.?":{}|<>]/.test(pw);
+            showError(password, passwordError, !valid);
+            return valid;
+        }
+
+        function validateInviteCode() {
+            const valid = inviteCode.value.trim().length > 0;
+            showError(inviteCode, inviteCodeError, !valid);
+            return valid;
+        }
+
+        function toggleButton() {
+            const allValid = validateUsername() && validatePassword() && validateInviteCode();
+            btn.disabled = !allValid;
+        }
+
+        username.addEventListener('input', () => {
+            validateUsername();
+            toggleButton();
+        });
+        password.addEventListener('input', () => {
+            validatePassword();
+            toggleButton();
+        });
+        inviteCode.addEventListener('input', () => {
+            validateInviteCode();
+            toggleButton();
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (validateUsername() && validatePassword() && validateInviteCode()) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        toggleButton();
+        lucide.createIcons();
+    </script>
+</body>
+</html>
